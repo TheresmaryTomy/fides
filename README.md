@@ -58,6 +58,6 @@ python app.py
 
 ## Author
 
-Theresmary Tomy — AI Engineer in the making | Masters in AI | Passionate about building trustworthy, purpose-driven AI
+Theresmary Tomy - AI Engineer in the making | Masters in AI | Passionate about building trustworthy, purpose-driven AI
 
 [GitHub](https://github.com/TheresmaryTomy)
