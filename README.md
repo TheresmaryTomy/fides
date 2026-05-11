@@ -1,6 +1,6 @@
 # Fides - Catholic AI Companion 🙏
 
-A faithful and trustworthy AI companion for Catholics — built with Python and local LLM technology.
+A faithful and trustworthy AI companion for Catholics - built with Python and local LLM technology.
 
 ## What is Fides?
 
@@ -12,17 +12,17 @@ Fides (Latin for _faith_) is an AI-powered companion that helps Catholics with:
 - 👼 Saints and their stories
 - 👨‍👩‍👧 Raising children in the faith
 
-Fides is designed to be **trustworthy and grounded** — always citing sources and always reminding users to consult their priest for matters of conscience.
+Fides is designed to be **trustworthy and grounded** - always citing sources and always reminding users to consult their priest for matters of conscience.
 
 ## Tech Stack
 
-- **Python** — core application
-- **Ollama + Gemma3** — local LLM (no data sent to external servers)
-- **RAG pipeline** _(coming soon)_ — grounded in the Catechism of the Catholic Church
+- **Python** - core application
+- **Ollama + Gemma3** - local LLM (no data sent to external servers)
+- **RAG pipeline** _(coming soon)_ - grounded in the Catechism of the Catholic Church
 
 ## Why I Built This
 
-As a practicing Catholic and new mom, I wanted a tool that could help me and my family stay connected to the faith — answering questions quickly, suggesting prayers, and explaining Church teaching simply and accurately.
+As a practicing Catholic and new mom, I wanted a tool that could help me and my family stay connected to the faith - answering questions quickly, suggesting prayers, and explaining Church teaching simply and accurately.
 
 This project also reflects my belief that AI should be built responsibly, with trustworthiness and domain expertise at its core.
 
