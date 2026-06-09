@@ -6,20 +6,31 @@ model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # Connect to ChromaDB
 client = chromadb.PersistentClient(path="./chroma_db")
-collection = client.get_or_create_collection("catechism")
+catechism_collection = client.get_or_create_collection("catechism")
+bible_collection = client.get_or_create_collection("bible")
 
 def retrieve(query, n_results=3):
-    """Search ChromaDB for relevant chunks based on the user's question."""
+    """Search both Catechism and Bible for relevant chunks."""
     
-    # Convert question to embedding
     query_embedding = model.encode([query]).tolist()
     
-    # Search ChromaDB
-    results = collection.query(
+    # Search Catechism
+    catechism_results = catechism_collection.query(
         query_embeddings=query_embedding,
         n_results=n_results
     )
     
-    # Return the relevant chunks as a single string
-    chunks = results["documents"][0]
-    return "\n\n".join(chunks)
+    # Search Bible
+    bible_results = bible_collection.query(
+        query_embeddings=query_embedding,
+        n_results=n_results
+    )
+    
+    # Combine results
+    catechism_chunks = catechism_results["documents"][0]
+    bible_chunks = bible_results["documents"][0]
+    
+    context = "FROM THE CATECHISM:\n" + "\n\n".join(catechism_chunks)
+    context += "\n\nFROM SCRIPTURE:\n" + "\n\n".join(bible_chunks)
+    
+    return context
