@@ -1,4 +1,4 @@
-# Fides — AI Security Testing Log
+# Fides - AI Security Testing Log
 
 **Project:** Fides Catholic AI Companion  
 **Repository:** github.com/TheresmaryTomy/fides  
