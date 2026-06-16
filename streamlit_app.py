@@ -279,7 +279,21 @@ with tab1:
                 with st.spinner("Fides is reflecting..."):
                     context = retrieve(prompt)
 
-                    grounded_prompt = system_prompt + f"""
+                    # Build today's liturgical context
+                    today_context = ""
+                    if st.session_state.readings:
+                        r = st.session_state.readings
+                        today_context = f"\nTODAY'S LITURGICAL DATE: {date.today().strftime('%B %d, %Y')}\n"
+                        today_context += f"LITURGICAL DAY: {st.session_state.liturgical_data.get('celebration', {}).get('name', '') if st.session_state.liturgical_data else ''}\n"
+                        today_context += "TODAY'S MASS READINGS:\n"
+                        if r.get("first_reading"):
+                            today_context += f"- First Reading: {r['first_reading'].get('reference', '')}\n"
+                        if r.get("psalm"):
+                            today_context += f"- Psalm: {r['psalm'].get('reference', '')}\n"
+                        if r.get("gospel"):
+                            today_context += f"- Gospel: {r['gospel'].get('reference', '')}\n"
+
+                    grounded_prompt = system_prompt + today_context + f"""
 
 RELEVANT CHURCH DOCUMENTS:
 {context}
