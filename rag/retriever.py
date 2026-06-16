@@ -1,36 +1,47 @@
-import chromadb
+import os
+from pinecone import Pinecone
 from sentence_transformers import SentenceTransformer
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Connect to Pinecone
+pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+index = pc.Index("fides")
 
 # Load embedding model
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-# Connect to ChromaDB
-client = chromadb.PersistentClient(path="./chroma_db")
-catechism_collection = client.get_or_create_collection("catechism")
-bible_collection = client.get_or_create_collection("bible")
-
 def retrieve(query, n_results=3):
-    """Search both Catechism and Bible for relevant chunks."""
+    """Search Pinecone for relevant chunks."""
     
-    query_embedding = model.encode([query]).tolist()
+    # Convert question to embedding
+    query_embedding = model.encode([query]).tolist()[0]
     
-    # Search Catechism
-    catechism_results = catechism_collection.query(
-        query_embeddings=query_embedding,
-        n_results=n_results
+    # Search Pinecone
+    results = index.query(
+        vector=query_embedding,
+        top_k=n_results,
+        include_metadata=True
     )
     
-    # Search Bible
-    bible_results = bible_collection.query(
-        query_embeddings=query_embedding,
-        n_results=n_results
-    )
+    # Separate by source
+    catechism_chunks = []
+    bible_chunks = []
     
-    # Combine results
-    catechism_chunks = catechism_results["documents"][0]
-    bible_chunks = bible_results["documents"][0]
+    for match in results["matches"]:
+        source = match["metadata"]["source"]
+        text = match["metadata"]["text"]
+        if source == "catechism":
+            catechism_chunks.append(text)
+        else:
+            bible_chunks.append(text)
     
-    context = "FROM THE CATECHISM:\n" + "\n\n".join(catechism_chunks)
-    context += "\n\nFROM SCRIPTURE:\n" + "\n\n".join(bible_chunks)
+    # Build context
+    context = ""
+    if catechism_chunks:
+        context += "FROM THE CATECHISM:\n" + "\n\n".join(catechism_chunks)
+    if bible_chunks:
+        context += "\n\nFROM SCRIPTURE:\n" + "\n\n".join(bible_chunks)
     
     return context
