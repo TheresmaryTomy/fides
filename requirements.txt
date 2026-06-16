@@ -1,8 +1,9 @@
 streamlit
 anthropic
 pinecone
-sentence-transformers
 beautifulsoup4
 requests
 python-dotenv
-numpy==1.26.4 
+numpy==1.26.4
+sentence-transformers==2.2.2
+torch==2.0.1
