@@ -3,7 +3,5 @@ anthropic
 pinecone
 sentence-transformers
 beautifulsoup4
-requests
 python-dotenv
-numpy==1.26.4
 torch --index-url https://download.pytorch.org/whl/cpu
