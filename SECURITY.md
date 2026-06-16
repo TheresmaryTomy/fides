@@ -79,7 +79,7 @@ outside its intended purpose.
 ## 4. RAG Pipeline Security
 
 **What it is:** Vulnerabilities specific to the Retrieval Augmented
-Generation pipeline — the system that fetches Catechism and Bible chunks.
+Generation pipeline - the system that fetches Catechism and Bible chunks.
 
 | Test | Status | Notes |
 |---|---|---|
@@ -103,7 +103,7 @@ it as truth. This is an AI-specific risk unique to LLM applications.
 
 | Test | Status | Notes |
 |---|---|---|
-| Gospel reference accuracy check | ⚠️ Issue found | Small local model (gemma3:1b) cited wrong Gospel — fixed by switching to Claude |
+| Gospel reference accuracy check | ⚠️ Issue found | Small local model (gemma3:1b) cited wrong Gospel - fixed by switching to Claude |
 | CCC paragraph accuracy | ⬜ Ongoing | Spot-check 10 random CCC references per month |
 | Saint feast day accuracy | ⬜ Ongoing | Cross-check with Vatican News |
 | Doctrinal accuracy on key teachings | ⬜ To test | Test Eucharist, Confession, Trinity, Mary |
@@ -179,14 +179,14 @@ it as truth. This is an AI-specific risk unique to LLM applications.
 
 When Fides grows beyond a portfolio project into a real product:
 
-1. **Privacy policy** — required before collecting any user data
-2. **Penetration testing** — formal pentest before public launch
-3. **OWASP LLM Top 10** — review all 10 LLM-specific vulnerabilities
-4. **Content moderation layer** — add before scaling to large user base
-5. **Audit logging** — track unusual usage patterns
-6. **GDPR/Australian Privacy Act compliance** — if storing any user data
+1. **Privacy policy** - required before collecting any user data
+2. **Penetration testing** - formal pentest before public launch
+3. **OWASP LLM Top 10** - review all 10 LLM-specific vulnerabilities
+4. **Content moderation layer** - add before scaling to large user base
+5. **Audit logging** - track unusual usage patterns
+6. **GDPR/Australian Privacy Act compliance** - if storing any user data
 
 ---
 
 *This document should be updated after every security test session.
-Security is not a one-time task — it is an ongoing practice.*
+Security is not a one-time task - it is an ongoing practice.*
