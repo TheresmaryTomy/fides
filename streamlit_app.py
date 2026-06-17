@@ -52,39 +52,29 @@ def get_liturgical_day():
 def get_todays_readings():
     try:
         today = date.today()
-        date_str = today.strftime("%m%d%y")
-        url = f"https://bible.usccb.org/bible/readings/{date_str}.cfm"
+        month_day = today.strftime("%m-%d")
+        year = today.strftime("%Y")
+        url = f"https://cpbjr.github.io/catholic-readings-api/readings/{year}/{month_day}.json"
         headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "en-US,en;q=0.5",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Connection": "keep-alive",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         }
-        response = requests.get(url, timeout=15, headers=headers)
-        soup = BeautifulSoup(response.content, "html.parser")
-
-        readings = {}
-        headers_found = soup.find_all(["h3", "h2", "h4"])
-
-        for header in headers_found:
-            text = header.get_text(strip=True)
-            ref_tag = header.find_next("a")
-            ref = ref_tag.get_text(strip=True) if ref_tag else text
-
-            if any(x in text for x in ["Reading I", "Reading 1", "First Reading"]):
-                readings["first_reading"] = {"reference": ref}
-            elif "Responsorial Psalm" in text or ("Psalm" in text and "Reading" not in text):
-                readings["psalm"] = {"reference": ref}
-            elif any(x in text for x in ["Reading II", "Reading 2", "Second Reading"]):
-                readings["second_reading"] = {"reference": ref}
-            elif "Gospel" in text and "Acclamation" not in text:
-                readings["gospel"] = {"reference": ref}
-
-        return readings if readings else None
+        response = requests.get(url, timeout=10, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            r = data.get("readings", {})
+            readings = {}
+            if r.get("firstReading"):
+                readings["first_reading"] = {"reference": r["firstReading"]}
+            if r.get("secondReading"):
+                readings["second_reading"] = {"reference": r["secondReading"]}
+            if r.get("psalm"):
+                readings["psalm"] = {"reference": r["psalm"]}
+            if r.get("gospel"):
+                readings["gospel"] = {"reference": r["gospel"]}
+            return readings if readings else None
+        return None
     except:
         return None
-
 def get_saint_of_day():
     try:
         today = date.today()
