@@ -41,7 +41,10 @@ def get_liturgical_day():
         month_day = today.strftime("%m-%d")
         year = today.strftime("%Y")
         url = f"https://cpbjr.github.io/catholic-readings-api/liturgical-calendar/{year}/{month_day}.json"
-        response = requests.get(url, timeout=5)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        }
+        response = requests.get(url, timeout=10, headers=headers)
         return response.json()
     except:
         return None
@@ -51,24 +54,31 @@ def get_todays_readings():
         today = date.today()
         date_str = today.strftime("%m%d%y")
         url = f"https://bible.usccb.org/bible/readings/{date_str}.cfm"
-        response = requests.get(url, timeout=10)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive",
+        }
+        response = requests.get(url, timeout=15, headers=headers)
         soup = BeautifulSoup(response.content, "html.parser")
 
         readings = {}
-        headers = soup.find_all("h3")
+        headers_found = soup.find_all(["h3", "h2", "h4"])
 
-        for header in headers:
+        for header in headers_found:
             text = header.get_text(strip=True)
-            link = header.find_next("a")
-            ref = link.get_text(strip=True) if link else ""
+            ref_tag = header.find_next("a")
+            ref = ref_tag.get_text(strip=True) if ref_tag else text
 
             if any(x in text for x in ["Reading I", "Reading 1", "First Reading"]):
                 readings["first_reading"] = {"reference": ref}
-            elif "Psalm" in text:
+            elif "Responsorial Psalm" in text or ("Psalm" in text and "Reading" not in text):
                 readings["psalm"] = {"reference": ref}
             elif any(x in text for x in ["Reading II", "Reading 2", "Second Reading"]):
                 readings["second_reading"] = {"reference": ref}
-            elif "Gospel" in text:
+            elif "Gospel" in text and "Acclamation" not in text:
                 readings["gospel"] = {"reference": ref}
 
         return readings if readings else None
@@ -81,7 +91,10 @@ def get_saint_of_day():
         month_day = today.strftime("%m-%d")
         year = today.strftime("%Y")
         url = f"https://cpbjr.github.io/catholic-readings-api/liturgical-calendar/{year}/{month_day}.json"
-        response = requests.get(url, timeout=5)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        }
+        response = requests.get(url, timeout=10, headers=headers)
         data = response.json()
         celebration = data.get("celebration", {})
         name = celebration.get("name", "")
@@ -214,6 +227,10 @@ tab1, tab2 = st.tabs(["💬 Ask Fides", "📅 Today"])
 with tab2:
     st.subheader("Today's Liturgical Day")
 
+    if st.button("🔄 Refresh readings"):
+        st.session_state.today_loaded = False
+        st.rerun()
+
     data = st.session_state.liturgical_data
     readings = st.session_state.readings
     saint = st.session_state.saint
@@ -264,10 +281,10 @@ with tab2:
                     st.info(f"Go to 💬 Ask Fides and type: 'Help me reflect on {gospel_ref}' 🙏")
 
         else:
-            st.warning("Could not load today's readings. Please check your internet connection.")
+            st.warning("Could not load today's readings. Try the 🔄 Refresh button above.")
 
     else:
-        st.warning("Could not load today's liturgical data. Please check your internet connection.")
+        st.warning("Could not load today's liturgical data. Try the 🔄 Refresh button above.")
 
 # ── Ask Fides tab ────────────────────────────────────────────────────────────
 
