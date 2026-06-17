@@ -215,11 +215,13 @@ tab1, tab2 = st.tabs(["💬 Ask Fides", "📅 Today"])
 # ── Today tab ────────────────────────────────────────────────────────────────
 
 with tab2:
-    st.subheader("Today's Liturgical Day")
-
-    if st.button("🔄 Refresh readings"):
-        st.session_state.today_loaded = False
-        st.rerun()
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        st.subheader("Today's Liturgical Day")
+    with col2:
+        if st.button("🔄 Refresh"):
+            st.session_state.today_loaded = False
+            st.rerun()
 
     data = st.session_state.liturgical_data
     readings = st.session_state.readings
