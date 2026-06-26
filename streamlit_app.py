@@ -262,8 +262,9 @@ if not st.session_state.today_loaded:
 
 # ── UI ───────────────────────────────────────────────────────────────────────
 
-st.title("✝️ Fides")
-st.caption("Your faithful Catholic AI companion")
+st.title("Fides")
+st.markdown("##### *Your faithful Catholic AI companion*")
+st.info("Fides is a faith companion, not a substitute for your priest or spiritual director.")
 
 tab1, tab2 = st.tabs(["💬 Ask Fides", "📅 Today"])
 
