@@ -261,10 +261,8 @@ if not st.session_state.today_loaded:
     st.session_state.today_loaded = True
 
 # ── UI ───────────────────────────────────────────────────────────────────────
-
-st.title("Fides")
-st.markdown("##### *Your faithful Catholic AI companion*")
-st.info("Fides is a faith companion, not a substitute for your priest or spiritual director.")
+# We let the elegant HTML block at the top handle the title. 
+# We only need to define the tabs and put the disclaimer cleanly inside them!
 
 tab1, tab2 = st.tabs(["💬 Ask Fides", "📅 Today"])
 
