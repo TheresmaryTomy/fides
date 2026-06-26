@@ -17,21 +17,77 @@ client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 st.set_page_config(
     page_title="Fides - Catholic AI Companion",
-    page_icon="✝️",
+    page_icon="⛪",  # Changed to match your screenshot icon, or keep your purple cross "✝️"
     layout="centered"
 )
 
 st.markdown(
     """
     <style>
+    /* Hide standard Streamlit elements */
     #MainMenu {visibility: hidden;}
     .stDeployButton {display:none;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+    
+    /* Elegant Title Container styles */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap');
+    
+    .title-container {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        margin-top: -30px; /* Pulls it up slightly since we hid the header space */
+        margin-bottom: 10px;
+    }
+    
+    .fides-title {
+        font-size: 3.5rem;
+        font-weight: 800; /* Extra bold */
+        color: #111111;
+        margin: 0;
+        display: flex;
+        align-items: baseline;
+        line-height: 1.1;
+    }
+    
+    /* Perfect circular gold/tan dot */
+    .gold-dot {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background-color: #C5A880; /* Perfectly matched liturgical gold/tan color */
+        border-radius: 50%;
+        margin-left: 4px;
+        align-self: center;
+        transform: translateY(12px); /* Aligns perfectly on the font's baseline */
+    }
+    
+    .fides-subtitle {
+        font-size: 1.25rem;
+        color: #7A92A8; /* Elegant soft blue-gray color */
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .fides-divider {
+        border: 0;
+        height: 1px;
+        background-color: #E2E8F0; /* Light elegant divider line */
+        margin-top: 5px;
+        margin-bottom: 30px;
+    }
     </style>
+    
+    <div class="title-container">
+        <h1 class="fides-title">Fides<span class="gold-dot"></span></h1>
+        <p class="fides-subtitle">Your Catholic AI Companion</p>
+        <hr class="fides-divider">
+    </div>
     """,
     unsafe_allow_html=True
 )
+```eof
 
 # ── Liturgical helpers ───────────────────────────────────────────────────────
 
